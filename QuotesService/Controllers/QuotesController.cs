@@ -9,10 +9,10 @@ namespace QuotesService.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class QuotesController : ControllerBase
-{
-    private readonly QuotesContext _context;
-    private readonly QuoteImportService _importService;
+    public class QuotesController : ControllerBase
+    {
+        private readonly QuotesContext _context;
+        private readonly QuoteImportService _importService;
 
     public QuotesController(QuotesContext context, QuoteImportService importService)
     {
