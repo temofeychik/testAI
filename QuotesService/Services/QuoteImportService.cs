@@ -1,4 +1,5 @@
 using System.Net.Http.Json;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -24,7 +25,10 @@ public class QuoteImportService
 
     public async Task<int> ImportQuotesAsync(CancellationToken cancellationToken = default)
     {
-        var existingIds = await _context.Quotes.Select(q => q.Id).ToHashSetAsync(cancellationToken);
+        var existingIds = (await _context.Quotes
+            .Select(q => q.Id)
+            .ToListAsync(cancellationToken))
+            .ToHashSet();
         var added = 0;
         var nextUrl = _initialUrl;
 
@@ -50,7 +54,7 @@ public class QuoteImportService
                     Text = item.Quote,
                     Author = item.Author,
                     Likes = item.Likes,
-                    Tags = string.Join(',', item.Tags ?? Array.Empty<string>()),
+                    Tags = string.Join(',', item.Tags ?? Enumerable.Empty<string>()),
                     Image = item.Image,
                     Language = item.Language
                 });
