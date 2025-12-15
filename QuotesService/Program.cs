@@ -5,6 +5,13 @@ using QuotesService.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+        policy.AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod());
+});
 
 builder.Services.Configure<PaperQuotesOptions>(builder.Configuration.GetSection("PaperQuotes"));
 
@@ -17,6 +24,8 @@ builder.Services.AddScoped<QuoteImportService>();
 var app = builder.Build();
 
 app.UseHttpsRedirection();
+
+app.UseCors();
 
 app.UseAuthorization();
 

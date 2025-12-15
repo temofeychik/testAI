@@ -13,6 +13,7 @@ public class QuotesContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Quote>().Property(q => q.Id).ValueGeneratedNever();
         modelBuilder.Entity<Quote>().Property(q => q.Tags).HasMaxLength(1024);
         base.OnModelCreating(modelBuilder);
     }

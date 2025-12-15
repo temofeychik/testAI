@@ -13,3 +13,8 @@ artifacts/
 
 # Logs
 *.log
+
+# Node / Angular
+node_modules/
+dist/
+.tmp/
