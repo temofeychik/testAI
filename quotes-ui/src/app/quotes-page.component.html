@@ -1,0 +1,60 @@
+<div class="actions">
+  <button class="primary" type="button" (click)="startCreate()">Новая цитата</button>
+  <button type="button" (click)="loadQuotes()" [disabled]="isLoading">Обновить</button>
+  <span class="status" *ngIf="status">{{ status }}</span>
+</div>
+
+<div class="layout">
+  <section class="form" aria-label="Форма цитаты">
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <label>
+        Текст
+        <textarea formControlName="text" rows="4" required></textarea>
+      </label>
+      <div class="row">
+        <label>Автор
+          <input formControlName="author" />
+        </label>
+        <label>Язык
+          <input formControlName="language" />
+        </label>
+      </div>
+      <div class="row">
+        <label>Лайки
+          <input type="number" formControlName="likes" min="0" />
+        </label>
+        <label>Изображение (URL)
+          <input formControlName="image" />
+        </label>
+      </div>
+      <label>
+        Теги (через запятую)
+        <input formControlName="tags" />
+      </label>
+      <div class="form__actions">
+        <button class="primary" type="submit">{{ isEditing ? 'Сохранить' : 'Добавить' }}</button>
+      </div>
+    </form>
+  </section>
+
+  <section class="list" aria-label="Сохранённые цитаты">
+    <h2>Цитаты ({{ quotes.length }})</h2>
+    <div *ngIf="isLoading" class="muted">Загрузка...</div>
+    <article class="card" *ngFor="let quote of quotes">
+      <div class="card__header">
+        <div>
+          <div class="card__title">#{{ quote.id }}</div>
+          <div class="card__meta" *ngIf="quote.author">Автор: {{ quote.author }}</div>
+          <div class="card__meta">Язык: {{ quote.language }} • Лайки: {{ quote.likes }}</div>
+          <div class="card__meta" *ngIf="quote.tags">Теги: {{ quote.tags }}</div>
+        </div>
+        <div class="card__actions">
+          <button type="button" (click)="startEdit(quote)">Редактировать</button>
+          <button type="button" class="danger" (click)="deleteQuote(quote.id)">Удалить</button>
+        </div>
+      </div>
+      <p class="card__text">{{ quote.text }}</p>
+      <a *ngIf="quote.image" [href]="quote.image" target="_blank" rel="noreferrer">Изображение</a>
+    </article>
+  </section>
+</div>
